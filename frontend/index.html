@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SecureChat — E2E Encrypted Messaging</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════
+     AUTH VIEW
+══════════════════════════════════════════════════════════════ -->
+<div id="auth-view" class="view">
+  <div class="auth-card">
+    <div class="auth-logo">
+      <h1>🔐 Secure<span>Chat</span></h1>
+      <p>End-to-end encrypted · AES-256-GCM · RSA-2048 · SHA-512</p>
+    </div>
+
+    <div class="auth-tabs">
+      <button id="tab-login"    class="auth-tab active">Login</button>
+      <button id="tab-register" class="auth-tab">Register</button>
+    </div>
+
+    <form id="login-form" class="auth-form">
+      <input id="login-username" type="text"     placeholder="Username" autocomplete="username" required />
+      <input id="login-password" type="password" placeholder="Password" autocomplete="current-password" required />
+      <button type="submit">Login</button>
+    </form>
+
+    <form id="register-form" class="auth-form" style="display:none">
+      <input id="reg-username" type="text"     placeholder="Username (3–32 chars)" required minlength="3" maxlength="32" />
+      <input id="reg-email"    type="email"    placeholder="Email address" required />
+      <input id="reg-password" type="password" placeholder="Password (min 8 chars)" required minlength="8" />
+      <button type="submit">Create account</button>
+    </form>
+
+    <p id="auth-error"></p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     APP VIEW
+══════════════════════════════════════════════════════════════ -->
+<div id="app-view" class="view">
+
+  <!-- Sidebar: user list -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div>
+        <div class="sidebar-title">SecureChat</div>
+        <div class="sidebar-user" id="self-username"></div>
+      </div>
+      <button id="logout-btn">Logout</button>
+    </div>
+    <ul id="user-list"></ul>
+  </aside>
+
+  <!-- Main chat area -->
+  <div class="chat-wrapper">
+    <div id="status-bar" class="status-bar"></div>
+
+    <!-- Placeholder when no chat is open -->
+    <div id="chat-placeholder">
+      <div class="ph-icon">🔒</div>
+      <p>Select a user to start an encrypted conversation</p>
+    </div>
+
+    <!-- Active chat -->
+    <div id="chat-area">
+      <!-- Header -->
+      <div class="chat-header">
+        <img class="avatar" id="chat-avatar" src="" alt="avatar" />
+        <div class="chat-header-info">
+          <span id="chat-header-name">—</span>
+          <span id="chat-header-status">—</span>
+        </div>
+        <div class="e2e-badge">🔐 E2E Encrypted</div>
+      </div>
+
+      <!-- Messages -->
+      <div id="messages"></div>
+
+      <!-- Typing indicator -->
+      <div id="typing-indicator"></div>
+
+      <!-- Input -->
+      <form id="msg-form" class="msg-form">
+        <input
+          id="msg-input"
+          type="text"
+          placeholder="Type a message… (encrypted before sending)"
+          autocomplete="off"
+        />
+        <button type="submit" class="send-btn" aria-label="Send">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/>
+          </svg>
+        </button>
+      </form>
+    </div>
+  </div>
+
+</div>
+
+<!-- Socket.IO client (served by the backend) -->
+<script src="/socket.io/socket.io.js"></script>
+<!-- App scripts -->
+<script src="/js/api.js"></script>
+<script src="/js/crypto.js"></script>
+<script src="/js/app.js"></script>
+
+</body>
+</html>
